@@ -2,6 +2,8 @@ import tkinter as tk
 from interfaz_user import *
 from tkinter import PhotoImage
 import os
+from engine import output_best_move
+import time
 
 wolf_image = os.path.join(os.getcwd(),'graficas piezas','lobo_transparente.png')
 sheep_image = os.path.join(os.getcwd(),'graficas piezas','sheep_transparente.png')
@@ -35,23 +37,6 @@ def add_circle(canvas, notation, square_size, circles, image_path=wolf_image):
 
     # Keep a reference to the image to prevent garbage collection
     canvas.image = img
-
-# Function to draw a circle in the given square
-# def add_circle(canvas, notation, square_size, circles):
-#     row, col = chess_notation_to_index(notation)
-    
-#     # Calculate the top-left and bottom-right coordinates of the square
-#     x1 = col * square_size + 20
-#     y1 = row * square_size + 20
-#     x2 = x1 + square_size
-#     y2 = y1 + square_size
-    
-#     # Calculate the coordinates for the circle (to fit inside the square)
-#     margin = 10  # Margin inside the square
-#     canvas.create_oval(x1 + margin, y1 + margin, x2 - margin, y2 - margin, fill='blue')
-
-#     # Store the notation of the square that contains a circle
-#     circles.add(notation)
 
 def draw_light_red_circle(canvas, notation, square_size):
     # Calculate the top-left and bottom-right coordinates of the square
@@ -184,12 +169,12 @@ def erase_light_squares(canvas):
         canvas.delete(square_id)  # Remove each circle from the canvas
     light_squares.clear()  # Clear the list after deletion
 
-def highlight_row_column_on_click(event, canvas, square_size, circles, squares):
+def highlight_row_column_on_click(event, canvas, square_size, circles, squares, gamemode):
     global light_circles
     global light_squares
     global light_red_circles
     global light_red_squares
-    
+
     # Get the row and column from the clicked position
     col = (event.x - 20) // square_size
     row = (event.y - 20) // square_size
@@ -198,6 +183,60 @@ def highlight_row_column_on_click(event, canvas, square_size, circles, squares):
     # Erase previous light gray circles
     erase_light_circles(canvas)
     erase_light_squares(canvas)
+
+    if gamemode == "Human (wolf) vs Computer (sheep)" and pawn_to_move[-1]:
+        print('processing...')
+        t1 = time.time()
+        if len(squares)==8 or len(squares)==7:
+            depth = 4
+        elif len(squares)>4:
+            depth = 6
+        elif len(squares)>3:
+            depth = 7
+        else:
+            depth = 8
+        pc_move = output_best_move([list(squares),list(circles)],pawn_to_move[-1],depth)[0]
+        add_square(canvas,find_difference(list(squares),pc_move),square_size,squares)
+        pawn_to_move.append(False)
+        delete_square_by_coordinate(canvas,find_difference(pc_move,list(squares)),square_size)
+        squares.remove(find_difference(pc_move,list(squares)))
+        light_squares.clear()
+        previous_light_squares_notations.clear()
+        if not find_difference(list(squares),pc_move) == None:
+            if find_difference(list(squares),pc_move)[1] == '8':
+                root = tk.Tk()  # This is the main Tkinter window
+                # root.geometry("600x400")
+                freeze_and_show_message('Sheeps win!',root)
+        print(f'Time: {time.time()-t1}s')
+        print('Your turn')
+
+    if gamemode == "Human (sheep) vs Computer (wolf)" and not pawn_to_move[-1]:
+        print('processing...')
+        t1 = time.time()
+        if len(squares)==8 or len(squares)==7:
+            depth = 4
+        elif len(squares)>4:
+            depth = 6
+        elif len(squares)>3:
+            depth = 7
+        else:
+            depth = 8
+        pc_move = output_best_move([list(squares),list(circles)],pawn_to_move[-1],depth)[1][0]
+        if pc_move in squares:
+            delete_square_by_coordinate(canvas,pc_move,square_size)
+            squares.remove(pc_move)
+            if len(squares)==0:
+                root = tk.Tk()
+                freeze_and_show_message('Wolf Wins!',root)
+                # show_message_on_current_screen(root,'Wolf wins!')
+        delete_all_circles(canvas,square_size,circles)
+        add_circle(canvas, pc_move, square_size, circles)
+        ready_to_move.append(False)
+        pawn_to_move.append(True)
+        print(f'Time: {time.time()-t1}s')
+        print('Your turn')
+
+
     if notation in previous_light_circles_notations[-16:]:
         if ready_to_move[-1]:
             if notation in squares:
@@ -212,35 +251,6 @@ def highlight_row_column_on_click(event, canvas, square_size, circles, squares):
             ready_to_move.append(False)
             pawn_to_move.append(True)
             previous_light_circles_notations.clear()
-        # else:
-        #     previous_light_circles_notations.clear()
-        #     if 0 <= row < 8 and 0 <= col < 8:
-        #         ready_to_move.append(False)
-        #         if notation in circles:
-        #             # Draw gray circles in all squares of the clicked row and column
-        #             ready_to_move.append(True)
-        #             for i in range(8):
-        #                 # Highlight row (same row, different columns)
-        #                 row_notation = coordinate_converter(row, i)
-        #                 if row_notation not in circles:  # Avoid overlap with existing circles
-        #                     circle_id = draw_light_circle(canvas, row, i, square_size)
-        #                     light_circles.append(circle_id)  # Keep track of this circle
-        #                     previous_light_circles_notations.append(row_notation)
-        #                 print(row_notation)
-        #                 print(squares)
-        #                 if row_notation in squares:
-        #                     print('square')
-        #                     i = 7
-        #             for i in range(8):
-        #                 # Highlight column (same column, different rows)
-        #                 col_notation = coordinate_converter(i, col)
-        #                 if col_notation not in circles:  # Avoid overlap with existing circles
-        #                     circle_id = draw_light_circle(canvas, i, col, square_size)
-        #                     light_circles.append(circle_id)  # Keep track of this circle
-        #                     previous_light_circles_notations.append(col_notation)
-        #                 if row_notation in squares:
-        #                     print('square')
-        #                     i = 7
 
     # Check if the click is within the chessboard boundaries
     else:
@@ -328,6 +338,7 @@ def highlight_row_column_on_click(event, canvas, square_size, circles, squares):
                             square_id = draw_light_square(canvas,light_square_anotation,square_size)
                             light_squares.append(square_id)
                             previous_light_squares_notations.append(light_square_anotation)
+
             elif notation in previous_light_squares_notations[-2:] and pawn_to_move[-1]:
                 add_square(canvas,notation,square_size,squares)
                 pawn_to_move.append(False)
@@ -379,7 +390,7 @@ def draw_light_red_square(canvas, notation, square_size):
     return canvas.create_rectangle(x1 + margin, y1 + margin, x2 - margin, y2 - margin, outline='red', width=2)
 
 # Function to create the chessboard (same as before)
-def create_chessboard_with_coordinates(size, square_size):
+def create_chessboard_with_coordinates(size, square_size, gamemode=None):
     root = tk.Tk()
     canvas_size = size * square_size + 40  # Extra space for coordinates
     canvas = tk.Canvas(root, width=canvas_size, height=canvas_size)
@@ -426,7 +437,7 @@ def create_chessboard_with_coordinates(size, square_size):
     # Bind mouse click event to the function on_square_click
     # canvas.bind("<Button-1>", lambda event: on_square_click(event, canvas, square_size, circles))
     # canvas.bind("<Button-1>", lambda event: add_circle_on_click(event, canvas, square_size, circles))
-    canvas.bind("<Button-1>", lambda event: highlight_row_column_on_click(event, canvas, square_size, circles,squares))
-    canvas.bind("<Button-1>", lambda event: highlight_row_column_on_click(event, canvas, square_size, circles,squares))
+    # canvas.bind("<Button-1>", lambda event: highlight_row_column_on_click(event, canvas, square_size, circles,squares))
+    canvas.bind("<Button-1>", lambda event: highlight_row_column_on_click(event, canvas, square_size, circles,squares,gamemode))
     
     root.mainloop()
