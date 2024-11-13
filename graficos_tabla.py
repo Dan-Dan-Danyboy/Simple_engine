@@ -4,7 +4,9 @@ from tkinter import PhotoImage
 import os
 from engine import output_best_move
 import time
+import subprocess
 
+engine = os.path.join(os.getcwd(),"Engine_c.exe")
 wolf_image = os.path.join(os.getcwd(),'graficas piezas','lobo_transparente.png')
 sheep_image = os.path.join(os.getcwd(),'graficas piezas','sheep_transparente.png')
 
@@ -188,14 +190,20 @@ def highlight_row_column_on_click(event, canvas, square_size, circles, squares, 
         print('processing...')
         t1 = time.time()
         if len(squares)==8 or len(squares)==7:
-            depth = 4
-        elif len(squares)>4:
-            depth = 6
-        elif len(squares)>3:
-            depth = 7
-        else:
             depth = 8
-        pc_move = output_best_move([list(squares),list(circles)],pawn_to_move[-1],depth)[0]
+        elif len(squares)>4:
+            depth = 10
+        elif len(squares)>3:
+            depth = 11
+        else:
+            depth = 12
+        # pc_move = output_best_move([list(squares),list(circles)],pawn_to_move[-1],depth)[0]
+        with open("sheep.txt","w") as file:
+            file.write(str(list(squares)))
+        with open("wolf.txt","w") as file:
+            file.write(str(list(circles)))
+        subprocess.run([engine,str(1),str(depth)])
+        pc_move = binary_to_cardesian()[0]
         add_square(canvas,find_difference(list(squares),pc_move),square_size,squares)
         pawn_to_move.append(False)
         delete_square_by_coordinate(canvas,find_difference(pc_move,list(squares)),square_size)
@@ -214,14 +222,20 @@ def highlight_row_column_on_click(event, canvas, square_size, circles, squares, 
         print('processing...')
         t1 = time.time()
         if len(squares)==8 or len(squares)==7:
-            depth = 4
+            depth = 9
         elif len(squares)>4:
-            depth = 6
+            depth = 10
         elif len(squares)>3:
-            depth = 7
+            depth = 10
         else:
-            depth = 8
-        pc_move = output_best_move([list(squares),list(circles)],pawn_to_move[-1],depth)[1][0]
+            depth = 11
+        # pc_move = output_best_move([list(squares),list(circles)],pawn_to_move[-1],depth)[1][0]
+        with open("sheep.txt","w") as file:
+            file.write(str(list(squares)))
+        with open("wolf.txt","w") as file:
+            file.write(str(list(circles)))
+        subprocess.run([engine,str(0),str(depth)])
+        pc_move = binary_to_cardesian()[1][0]
         if pc_move in squares:
             delete_square_by_coordinate(canvas,pc_move,square_size)
             squares.remove(pc_move)
