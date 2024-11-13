@@ -107,7 +107,6 @@ int main(int argc, char *argv[])
 
 	fclose(sheep);
     fclose(wolf);
-//    printf("Turn: %d\n",turn);
     minmax(depth,turn,INT_MIN,INT_MAX,depth,squares);
     return 1;
 }
@@ -186,12 +185,10 @@ int wolf_posibilities(int *squares, int (*posibilitie)[N]) {
         if (squares[i] == -1) {  // Check if this square is a wolf
             linee = i % 8;
             columnn = i / 8;
-//            printf("Line: %d; column: %d\n", linee, columnn);
 
             // Vertical check !
             for (int ii = linee - 1; ii >= 0; ii--) {
                 if (unprotected(squares, columnn * 8 + ii) == 1) {
-//                    printf("Line %d\n", ii);
                     // Copy the vector `squares` into `posibilitie[j]`
                     memcpy(posibilitie[j], squares, N * sizeof(int));
                     posibilitie[j][i] = 0;
@@ -213,7 +210,6 @@ int wolf_posibilities(int *squares, int (*posibilitie)[N]) {
                     }
                 }
                 if (unprotected(squares, columnn * 8 + ii) == 1) {
-//                    printf("Line %d\n", ii);
                     memcpy(posibilitie[j], squares, N * sizeof(int));
                     posibilitie[j][i] = 0;
                     posibilitie[j][columnn * 8 + ii] = -1;
@@ -234,7 +230,6 @@ int wolf_posibilities(int *squares, int (*posibilitie)[N]) {
                     }
                 }
                 if (unprotected(squares, ii * 8 + linee) == 1) {
-//                    printf("Column %d\n", ii);
                     memcpy(posibilitie[j], squares, N * sizeof(int));
                     posibilitie[j][i] = 0;
                     posibilitie[j][ii * 8 + linee] = -1;
