@@ -101,6 +101,13 @@ def unprotected(notation,squares):
             return False
     return True
 
+def find_difference(list1, list2):
+    # Convert both lists to sets and find the difference
+    difference = set(list2) - set(list1)
+    
+    # Return the different element (there should be only one element in the difference)
+    return list(difference)[0] if difference else None
+
 def binary_to_cardesian(file=os.path.join(os.getcwd(),"solution.txt")):
     sheeps,wolf = [],[]
     with open(file,"r") as f:
