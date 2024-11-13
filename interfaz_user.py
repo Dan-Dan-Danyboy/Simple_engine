@@ -1,3 +1,6 @@
+import ast
+import os
+
 def coordinate_converter(row, column):
     """Converts row and column numbers to coordinates in the specified system.
 
@@ -97,3 +100,19 @@ def unprotected(notation,squares):
         if diagonal_below in squares:
             return False
     return True
+
+def binary_to_cardesian(file=os.path.join(os.getcwd(),"solution.txt")):
+    sheeps,wolf = [],[]
+    with open(file,"r") as f:
+        content = f.read()
+    binary_board = ast.literal_eval(content)
+    for i in range(len(binary_board)):
+        if binary_board[i] == 1:
+            row = abs(i%8-7)
+            col = i//8
+            sheeps.append(coordinate_converter(row,col))
+        elif binary_board[i] == -1:
+            row = abs(i%8-7)
+            col = i//8
+            wolf.append(coordinate_converter(row,col))
+    return [sheeps,wolf]
