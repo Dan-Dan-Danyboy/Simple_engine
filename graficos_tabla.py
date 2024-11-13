@@ -2,7 +2,7 @@ import tkinter as tk
 from interfaz_user import *
 from tkinter import PhotoImage
 import os
-from engine import output_best_move
+# from engine import output_best_move
 import time
 import subprocess
 
