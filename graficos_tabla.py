@@ -223,6 +223,8 @@ def highlight_row_column_on_click(event, canvas, square_size, circles, squares, 
         t1 = time.time()
         if len(squares)==8 or len(squares)==7:
             depth = 9
+        elif len(squares)>5:
+            depth = 10
         elif len(squares)>4:
             depth = 11
         elif len(squares)>3:
