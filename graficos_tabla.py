@@ -222,15 +222,15 @@ def highlight_row_column_on_click(event, canvas, square_size, circles, squares, 
         print('processing...')
         t1 = time.time()
         if len(squares)==8 or len(squares)==7:
-            depth = 9
+            depth = 8
         elif len(squares)>5:
-            depth = 10
+            depth = 9
         elif len(squares)>4:
-            depth = 11
+            depth = 10
         elif len(squares)>3:
-            depth = 12
+            depth = 11
         else:
-            depth = 13
+            depth = 12
         # pc_move = output_best_move([list(squares),list(circles)],pawn_to_move[-1],depth)[1][0]
         with open("sheep.txt","w") as file:
             file.write(str(list(squares)))
