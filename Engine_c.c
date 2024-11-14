@@ -104,7 +104,7 @@ int main(int argc, char *argv[])
         }
     }
 
-	fclose(sheep);
+    fclose(sheep);
     fclose(wolf);
     minmax(depth,turn,INT_MIN,INT_MAX,depth,squares);
     return 1;
