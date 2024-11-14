@@ -345,7 +345,7 @@ int position_evaluation(int *squares)
                 {
                     if (*(squares+ii)==1)
                     {
-                        value += 20;
+                        value += 20; // If there are pawns in parallel columns the puntuation increases, this teaches the engine strategy
                     }
                 }
             }
@@ -355,7 +355,7 @@ int position_evaluation(int *squares)
                 {
                     if (*(squares-ii)==1)
                     {
-                        value += 20;
+                        value += 20; // Checks the left column
                     }
                 }
             }
@@ -439,4 +439,3 @@ int minmax(int depth, int isMaximizingPlayer, int alpha, int beta, int n, int *s
     free(posibilitie);
     return bestValue;
 }
-
