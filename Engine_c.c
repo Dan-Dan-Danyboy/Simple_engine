@@ -46,7 +46,7 @@ int main(int argc, char *argv[])
     sheep = fopen("sheep.txt","r");
     wolf = fopen("wolf.txt","r");
 
-    while (fscanf(sheep,"%c", &x) != EOF)
+    while (fscanf(sheep,"%c", &x) != EOF) //reads the file produced in python and passes it to a code in C to a vector that indicates where the pieces are located
     {
         if (x=='\'')
         {
@@ -75,7 +75,7 @@ int main(int argc, char *argv[])
         }
     }
 
-    while (fscanf(wolf,"%c", &x) != EOF)
+    while (fscanf(wolf,"%c", &x) != EOF) //reads the file produced in python and passes it to a code in C to a vector that indicates where the pieces are located
     {
         if (x=='\'')
         {
@@ -106,7 +106,7 @@ int main(int argc, char *argv[])
 
     fclose(sheep);
     fclose(wolf);
-    minmax(depth,turn,INT_MIN,INT_MAX,depth,squares);
+    minmax(depth,turn,INT_MIN,INT_MAX,depth,squares); //executes the minmax algorith and writes the solution in a txt file to be read later in python
     return 1;
 }
 
