@@ -1,3 +1,8 @@
+"""
+This part of the code is not used. It was the first attempt to implement the minmax algorithm. Due to the low speed of python and essentially due to the lack
+of pruning in the minmax algorithm this engine can easily be beaten. Nevertheless, it can result hard if you're a noob in chess
+"""
+
 from interfaz_user import coordinate_converter, unprotected
 import os
 import time
