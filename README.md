@@ -5,3 +5,5 @@ The game consists of a rook, which represents a wolf, and 8 pawns which represen
 For the wolf to win he has to take out all the sheep. The sheep win once one of them reaches the 8th row of the board.
 
 The algorithm used to solve the problem is the minmax algorithm.
+
+https://github.com/user-attachments/assets/db38b28f-e647-43a5-8148-97147ffcc911
