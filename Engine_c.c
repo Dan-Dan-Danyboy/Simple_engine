@@ -18,7 +18,6 @@
 //0-> Wolf to move
 //1-> Sheep to move
 
-void fill_with_zeros(int *squares);
 int coordinate_conversor(char column, int line);
 void add_piece(char piece, int *board);
 void fill_board_sheep(int *squares, char column, int line);
