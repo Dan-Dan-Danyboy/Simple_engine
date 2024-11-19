@@ -111,34 +111,7 @@ int main(int argc, char *argv[])
 
 int coordinate_conversor(char column, int line)
 {
-    int col,coordinate;
-    switch (column)
-    {
-        case 'A':
-            col = 0;
-            break;
-        case 'B':
-            col = 1;
-            break;
-        case 'C':
-            col = 2;
-            break;
-        case 'D':
-            col = 3;
-            break;
-        case 'E':
-            col = 4;
-            break;
-        case 'F':
-            col = 5;
-            break;
-        case 'G':
-            col = 6;
-            break;
-        case 'H':
-            col = 7;
-            break;
-    }
+    int col = column - 'A', coordinate;
     coordinate = col*8+(line-1);
     return coordinate;
 }
