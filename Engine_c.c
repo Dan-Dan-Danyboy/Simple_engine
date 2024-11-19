@@ -159,7 +159,7 @@ int wolf_posibilities(int *squares, int (*posibilitie)[N]) {
 
             // Vertical check !
             for (int ii = linee - 1; ii >= 0; ii--) {
-                if (unprotected(squares, columnn * 8 + ii) == 1) {
+                if (unprotected(squares, columnn * 8 + ii)) {
                     // Copy the vector `squares` into `posibilitie[j]`
                     memcpy(posibilitie[j], squares, N * sizeof(int));
                     posibilitie[j][i] = 0;
@@ -175,20 +175,18 @@ int wolf_posibilities(int *squares, int (*posibilitie)[N]) {
             for (int ii = linee + 1; ii <= 7; ii++) {
                 if (ii==7)
                 {
-                    if (squares[i + (ii - linee)]==1) // If there's a pawn in the 8th row the game is over
+                    if (squares[i + (ii - linee)] == 1) // If there's a pawn in the 8th row the game is over
                     {
                         return 0;
                     }
                 }
-                if (unprotected(squares, columnn * 8 + ii) == 1) {
+                if (unprotected(squares, columnn * 8 + ii)) {
                     memcpy(posibilitie[j], squares, N * sizeof(int));
                     posibilitie[j][i] = 0;
                     posibilitie[j][columnn * 8 + ii] = -1;
                     j++;
                 }
-                if (squares[i + (ii - linee)] == 1) {
-                    break;
-                }
+                if (squares[i + (ii - linee)] == 1) break;
             }
 
             // Horizontal check <-
@@ -200,15 +198,13 @@ int wolf_posibilities(int *squares, int (*posibilitie)[N]) {
                         return 0; // End the game if there's a pawn in the last row
                     }
                 }
-                if (unprotected(squares, ii * 8 + linee) == 1) {
+                if (unprotected(squares, ii * 8 + linee)) {
                     memcpy(posibilitie[j], squares, N * sizeof(int));
                     posibilitie[j][i] = 0;
                     posibilitie[j][ii * 8 + linee] = -1;
                     j++;
                 }
-                if (squares[i - 8 * (columnn - ii)] == 1) {
-                    break;
-                }
+                if (squares[i - 8 * (columnn - ii)] == 1) break;
             }
 
             // Horizontal check ->
@@ -220,16 +216,14 @@ int wolf_posibilities(int *squares, int (*posibilitie)[N]) {
                         return 0; // End the game if there's a pawn in the last row
                     }
                 }
-                if (unprotected(squares, ii * 8 + linee) == 1) {
+                if (unprotected(squares, ii * 8 + linee)) {
 //                    printf("Column %d\n", ii);
                     memcpy(posibilitie[j], squares, N * sizeof(int));
                     posibilitie[j][i] = 0;
                     posibilitie[j][ii * 8 + linee] = -1;
                     j++;
                 }
-                if (squares[i + 8 * (ii - columnn)] == 1) {
-                    break;
-                }
+                if (squares[i + 8 * (ii - columnn)] == 1) break;
             }
         }
     }
