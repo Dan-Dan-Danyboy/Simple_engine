@@ -10,5 +10,4 @@ https://github.com/user-attachments/assets/db38b28f-e647-43a5-8148-97147ffcc911
 
 The following video ilustrates how the minmax algorithm works.
 
-https://github.com/user-attachments/assets/8b221c65-8713-4fbe-b9f1-d8e4e42f9700
-
+https://github.com/user-attachments/assets/24d85d9b-df41-42b7-aa3e-1ef7e60fa0bf
